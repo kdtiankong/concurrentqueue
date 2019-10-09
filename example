@@ -1,0 +1,19 @@
+struct MegaImplicitTraits : moodycamel::ConcurrentQueueDefaultTraits {
+	static const size_t BLOCK_SIZE = 1024;
+	static const size_t IMPLICIT_INITIAL_INDEX_SIZE = 1024;
+};
+
+
+typedef struct signature_business_element{
+	std::string service_name;
+	std::string service_ip;
+	int service_port;
+	std::string signature_type;	//Attached,Detached,RAW
+	std::string certificate_serial;
+	std::string happened_time;
+	int result;			//0:ok,1:failed
+}signature_business_element;
+
+std::shared_ptr<moodycamel::ConcurrentQueue<signature_business_element, MegaImplicitTraits> > ptr = objectCreate::get_object<moodycamel::ConcurrentQueue<signature_business_element, MegaImplicitTraits> >(1024*1024, 0, 1);
+signature_business_element element;
+ptr->enqueue(element);
